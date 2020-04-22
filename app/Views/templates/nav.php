@@ -14,7 +14,7 @@
       }
       if($balance >= 0){
         echo '<li class="nav-item">';
-        if($balance = 0) {
+        if($balance == 0) {
         echo '<a class="nav-link text-success" href="'.base_url("/wallet").'">Balance: 0</a>';
         } else {
         echo '<a class="nav-link text-success" href="'.base_url("/wallet").'">Balance: '.$balance.'</a>';

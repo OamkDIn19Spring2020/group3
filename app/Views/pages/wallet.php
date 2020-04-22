@@ -2,7 +2,12 @@
     <div class="row">
         <div class="col card">
             <h4><?= $username ?>'s Wallet </h4>
-            <h5>Balance: <?= $balance ?> STONK$ </h5>
+            <h5>Balance: <?php if ($balance == 0){
+                        echo "0";
+                    } else {
+                        echo $balance;
+                    }
+                    ?> STONK$ </h5>
             <a href='<?php echo base_url('/topup') ?>'>
                 <button class="btn btn-light">Deposit</button>
             </a>
