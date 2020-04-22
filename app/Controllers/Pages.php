@@ -27,7 +27,11 @@ class Pages extends BaseController
         //print header
         echo view('templates/header', $data);
         //print navbar
-        $this->generateNavBar();
+        if($page == 'admin'){
+            $this->generateNavBar(true);
+        } else{
+            $this->generateNavBar(false);
+        }
         //print alerts if any
         $this->generateAlerts();
         //show error if the view doesn't exist
@@ -62,19 +66,24 @@ class Pages extends BaseController
         }
     }
 
-    public function generateNavBar()
+    public function generateNavBar($admin = false)
     {
-        $account = new Account();
-        if ($account->isLoggedIn()) {
-            $balance = $account->getBalance(null) . ' Stonk$';
-            $navItems = [
-                'dashboard' => 'Dashboard', 'exchange' => 'Stonk exchange', 'support' => 'Support',
-                'profile' => 'My account'
-            ];
-            $data = ['navItems' => $navItems, 'balance' => $balance];
-        } else {
-            $navItems = ['home' => 'Home', 'login' => 'Login', 'register' => 'Register'];
+        if ($admin == true){
+            $navItems = ['admin#user' => 'Users', 'admin#stonk' => 'Stonks', 'admin#server' => 'Server', 'admin#stats' => 'Statistics', 'login' => 'Log out'];
             $data = ['navItems' => $navItems, 'balance' => '-1'];
+        } else {
+            $account = new Account();
+            if ($account->isLoggedIn()) {
+                $balance = $account->getBalance(null) . ' Stonk$';
+                $navItems = [
+                    'dashboard' => 'Dashboard', 'exchange' => 'Stonk exchange', 'support' => 'Support',
+                    'profile' => 'My account'
+                ];
+                $data = ['navItems' => $navItems, 'balance' => $balance];
+            } else {
+                $navItems = ['home' => 'Home', 'login' => 'Login', 'register' => 'Register'];
+                $data = ['navItems' => $navItems, 'balance' => '-1'];
+            }
         }
         echo view('templates/nav', $data);
     }

@@ -18,7 +18,13 @@
                 <img class="card-img-top" height="200px" width="100px" src="<?php echo base_url($avatar) ?>" alt="User avatar">
                 <div class="card-body">
                     <h4 class="card-title"><?= $username ?>'s dashboard</h4>
-                    <p class="card-text h5">Balance: <?= $balance ?> Stonk$ </p>
+                    <p class="card-text h5">Balance: 
+                    <?php if ($balance == 0){
+                        echo "0";
+                    } else {
+                        echo $balance;
+                    }
+                    ?> Stonk$ </p>
                     <a class="card-text" href='<?php echo base_url('/wallet') ?>'>
                     <small class="text-muted">Go to my wallet</small>
                     </a>
