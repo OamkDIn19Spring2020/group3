@@ -19,13 +19,28 @@ class Admin extends BaseController
         $pages = new Pages();
         $error = new Error();
         $tables = new Tables();
-        $success = $tables->initialize_database();
+        $success = $tables->initialize_database(true);
+        if ($success) {
+            $error->setErrorState('success', 'Tables and entries created');
+            $pages->get('admin');
+        } else {
+            $error->setErrorState('danger', 'Error creating tables');
+            $pages->get('admin');
+        }
+    }
+    //Create tables in database
+    public function setupdbnodefaults()
+    {
+        $pages = new Pages();
+        $error = new Error();
+        $tables = new Tables();
+        $success = $tables->initialize_database(false);
         if ($success) {
             $error->setErrorState('success', 'Tables created');
-            $pages->get('home');
+            $pages->get('admin');
         } else {
-            $error->setErrorState('danger', 'Tables not created');
-            $pages->get('home');
+            $error->setErrorState('danger', 'Error creating tables');
+            $pages->get('admin');
         }
     }
     //Drop tables from database
@@ -37,10 +52,10 @@ class Admin extends BaseController
         $success = $tables->drop_db_tables();
         if ($success) {
             $error->setErrorState('success', 'Tables removed');
-            $pages->get('home');
+            $pages->get('admin');
         } else {
             $error->setErrorState('danger', 'Error while removing tables');
-            $pages->get('home');
+            $pages->get('admin');
         }
     }
 }
