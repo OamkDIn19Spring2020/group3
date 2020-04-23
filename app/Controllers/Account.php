@@ -116,6 +116,42 @@ class Account extends BaseController
             }
         }
     }
+    //Change user password
+    public function changepassword()
+    {
+        $error = new Error();
+        $users = new Users();
+        $pages = new Pages();
+        helper(['form', 'url']);
+        $val = $this->validate(
+            [
+                'oldpassword' => 'required|regex_match[^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$]',
+                'newpassword' => 'required|regex_match[^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$]',
+                'confirmnewpassword' => 'required|matches[newpassword]',
+            ]
+        );
+        if (!$val) {
+            $error->setErrorState('danger', 'Data not valid');
+            $pages->get('changepassword');
+            return;
+        } 
+        if ($this->isLoggedIn()) {
+            $oldpassword = $this->request->getVar('oldpassword');
+            $newpassword = $this->request->getVar('newpassword');
+            $success = $users->changepassword($_SESSION['username'], $oldpassword, $newpassword);
+            if ($success) {
+                $error->setErrorState('success', 'Password changed');
+                $pages->get('dashboard');
+            } else {
+                $error->setErrorState('danger', 'Unable to change password');
+                $pages->get('changepassword');
+            }
+        } else {
+            $error->setErrorState('danger', 'Not signed in');
+            $pages->get('home');
+        }
+    }
+
     //Autologin with demo account
     public function demoAutoLogin()
     {

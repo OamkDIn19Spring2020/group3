@@ -110,6 +110,22 @@ class Users extends Database
         }
         return true;
     }
+    //CHANGE PASSWORD
+    function changepassword($username, $oldpassword, $newpassword)
+    {
+        try {
+            $query = $this->db->table('users')->select('password')->where('username', $username)->get();
+            $password = $query->getRow()->password;
+            if (password_verify($oldpassword, $password)) {
+                $query = $this->db->table('users')->set('password', password_hash($newpassword, PASSWORD_DEFAULT))->where('username', $username)->update();
+            } else {
+                return false;
+            }
+        } catch (\Throwable $th) {
+            return false;
+        }
+        return true;
+    }
     //DELETE USER
     function removeuser($username)
     {
