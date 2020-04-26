@@ -194,7 +194,5 @@ class Admin extends BaseController
             $error->setErrorState('danger', 'A new stonk added');
             $pages->get('admin');
         }
-        $error->setErrorState('danger', 'Action could not be completed');
-        $pages->get('admin');
     }
 }
