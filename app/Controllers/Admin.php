@@ -167,7 +167,6 @@ class Admin extends BaseController
             echo '        <th scope="col">Stonk Name</th>';
             echo '        <th scope="col">Issuer ID</th>';
             echo '        <th scope="col">Description</th>';
-            echo '        <th scope="col">Status</th>';
             echo '    </tr>';
             echo '</thead>';
             echo '<tbody>';
@@ -180,12 +179,6 @@ class Admin extends BaseController
                 echo $row->issuer_id;
                 echo "</td><td>";
                 echo $row->stonk_desc;
-                echo "</td><td>";
-                if ($row->stonk_tradeable == 1){
-                    echo "Active";
-                } else {
-                    echo "Trading disabled";
-                }
                 echo "</td><tr>";
             }
             echo '</tbody>';
