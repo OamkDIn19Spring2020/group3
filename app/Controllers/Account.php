@@ -249,7 +249,7 @@ class Account extends BaseController
         $users = new Users();
         if ($this->isLoggedIn(true)) {
             $username = $_SESSION['username'];
-            $users->disable($username);
+            $users->disable($username, "user");
             unset($_SESSION['logged_in']);
             unset($_SESSION['username']);
             $error->setErrorState('success', 'Your account has been disabled');

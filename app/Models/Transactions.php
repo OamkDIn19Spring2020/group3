@@ -3,6 +3,8 @@ namespace App\Models;
 
 class Transactions extends Database
 {
+    protected $table = 'transactions';
+    
     //PROCESS A TOPUP OR WITHDRAW TRANSACTION
     public function money_transaction($username, $amount, $message)
     {
