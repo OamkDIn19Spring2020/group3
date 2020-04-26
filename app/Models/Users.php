@@ -18,7 +18,6 @@ class Users extends Database
             ]
         );
     }
-
     //CHECK IF USER DATABASE ENTRY EXISTS
     public function user_exists($username)
     {
@@ -153,13 +152,27 @@ class Users extends Database
         return true;
     }
     //DISABLE ACCOUNT
-    function disable($username)
+    function disable($username, $by)
     {
         try {
             $query = $this->db->table('users')->select('user_id')->where('username', $username)->get();
             $id = $query->getRow()->user_id;
             $query = $this->db->table('users')->set('disabled', true)->where('user_id', $id)->update();
-            $query = $this->db->table('users')->set('disabled_reason', "Disabled by user")->where('user_id', $id)->update();
+            $query = $this->db->table('users')->set('disabled_reason', "Disabled by ".$by)->where('user_id', $id)->update();
+            
+        } catch (\Throwable $th) {
+            return false;
+        }
+        return true;
+    }
+    //RESTORE ACCOUNT
+    function restore($username)
+    {
+        try {
+            $query = $this->db->table('users')->select('user_id')->where('username', $username)->get();
+            $id = $query->getRow()->user_id;
+            $query = $this->db->table('users')->set('disabled', false)->where('user_id', $id)->update();
+            $query = $this->db->table('users')->set('disabled_reason', "Restored by admin")->where('user_id', $id)->update();
             
         } catch (\Throwable $th) {
             return false;

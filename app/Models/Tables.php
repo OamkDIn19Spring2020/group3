@@ -1,5 +1,8 @@
 <?php
 namespace App\Models;
+use App\Models\Stonks;
+use App\Models\Users;
+use App\Models\Transactions;
 
 class Tables extends Database
 {
@@ -74,31 +77,24 @@ class Tables extends Database
                 (stonk_name, issuer_id, stonk_desc, stonk_tradable) VALUES
                 ("", 1, "", false)'
             );
+            $default_issuer_names = ['ACME Company LTD', 'Worldwide Trading Co', 'United Refineries'];
+            $default_issuer_desc = ['A vibrant and well-respected company in their field.', 'No information provided', 'Evil but thriving state monopoly'];
+            for ($i = 0; $i < count($default_issuer_names); $i++) {
+                $query = $this->db->query(
+                    'INSERT INTO issuers
+                    (issuer_name, issuer_desc, sponsored) VALUES
+                    ("' . $default_issuer_names[$i] . '", "' . $default_issuer_desc[$i] . '", false)'
+                );
+
+                $query = $this->db->query('SELECT LAST_INSERT_ID() AS issuer_id');
+                $issuer_id = $query->getRow()->issuer_id;
+            }
             if($defaults == true){
-                //Add default issuers and a few stonks
-                $default_issuer_names = ['ACME Company LTD', 'Worldwide Trading Co', 'United Refineries'];
-                $default_stonks = ['ACM', 'WTC', 'UNR'];
-                $default_issuer_desc = 'A vibrant and well-respected company in their field.';
-                $default_stonk_desc = 'Good choice for beginner traders.';
-
-                for ($i = 0; $i < count($default_issuer_names); $i++) {
-                    $query = $this->db->query(
-                        'INSERT INTO issuers
-                        (issuer_name, issuer_desc, sponsored) VALUES
-                        ("' . $default_issuer_names[$i] . '", "' . $default_issuer_desc . '", false)'
-                    );
-
-                    $query = $this->db->query('SELECT LAST_INSERT_ID() AS issuer_id');
-                    $issuer_id = $query->getRow()->issuer_id;
-
-                    for ($j = rand(1, 5); $j > 0; $j--) {
-                        $query = $this->db->query(
-                            'INSERT INTO stonks 
-                            (stonk_name, issuer_id, stonk_desc, stonk_tradable, base, volatility) VALUES
-                            ("' . $default_stonks[$i] . ' No. ' . $j . '", ' . $issuer_id . ', "' . $default_stonk_desc . '", true, ' . rand(1, 100) . ', ' . rand(1, 100) . ')'
-                        );
-                    }
-                }
+                $stonks = new Stonks();
+                $stonks->add_stonk();
+                $stonks->add_stonk();
+                $stonks->add_stonk();
+                $stonks->add_stonk();
             }
         } catch (\Throwable $th) {
             return false;
@@ -117,5 +113,8 @@ class Tables extends Database
             return false;
         }
         return true;
+    }
+    public function gettable($tablename){
+        return $this->db->query('SELECT * FROM '.$tablename)->getResult();
     }
 }
