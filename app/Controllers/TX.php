@@ -74,6 +74,41 @@ class TX extends BaseController
             $pages->get('home');
         }
     }
+    public function upgrade(){
+        $pages = new Pages();
+        $error = new Error();
+        $account = new Account();
+        $transactions = new Transactions();
+        $users = new Users();
+
+        if ($account->isLoggedIn()) {
+            $username = $_SESSION['username'];
+            $amount = 19999;
+            $current_funds = $users->check_balance($username);
+            if (!is_numeric($amount) || $amount < 0) {
+                $error->setErrorState('danger', 'Enter a valid amount');
+                $pages->get('viparea');
+            } else if ($current_funds < $amount) {
+                $error->setErrorState('danger', 'Insufficient funds');
+                $pages->get('viparea');
+            } else {
+                $success = $transactions->money_transaction($username, -$amount, "Upgrade to VIP");
+                if ($success) {
+                    $users->setvip($username);
+                    $transactions->stonk_transaction($username, 0, 2, 1, "Free stonk");
+                    $error->setErrorState('success', 'Account upgraded to VIP');
+                    $pages->get('viparea');
+                } else {
+                    $error->setErrorState('danger', 'Unable to upgrade');
+                    $pages->get('home');
+                }
+            }
+        } else {
+            $error->setErrorState('danger', 'Not signed in');
+            $pages->get('home');
+        }
+    }
+
     //Create new stonk trade transaction
     public function quicktrade()
     {

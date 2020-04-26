@@ -101,15 +101,20 @@ class Account extends BaseController
         } else {
             $username = $this->request->getVar('username');
             $password = $this->request->getVar('password');
+            $disabled = false;
             $users = new Users();
-            $success = $users->check_credentials($username, $password);
+            $success = $users->check_credentials($username, $password, $disabled);
             if ($success) {
                 $error->setErrorState('success', 'Authentication successful');
                 $_SESSION['logged_in'] = true;
                 $_SESSION['username'] = $username;
                 $pages->get('dashboard');
             } else {
-                $error->setErrorState('danger', 'Could not authenticate');
+                if($users->getDisabled($username) == true){
+                    $error->setErrorState('danger', 'Your account is suspended for reason: '.$users->getDisabledReason($username));
+                } else {
+                    $error->setErrorState('danger', 'Could not authenticate');
+                }
                 unset($_SESSION['logged_in']);
                 unset($_SESSION['username']);
                 $pages->get('login');
@@ -255,5 +260,11 @@ class Account extends BaseController
             unset($_SESSION['username']);
             $pages->get('login');
         }
+    }
+    public function newticket(){
+        $pages = new Pages();
+        $error = new Error();
+        $error->setErrorState('danger', 'Ticket system is currently down. Please contact us via email at support@example.com');
+        $pages->get('support');
     }
 }

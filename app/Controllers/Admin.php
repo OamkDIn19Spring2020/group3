@@ -58,4 +58,12 @@ class Admin extends BaseController
             $pages->get('admin');
         }
     }
+    function manageusers()
+    {
+        $username = $this->request->getVar('username');
+    }
+    function managestonks()
+    {
+        $stonkid = $this->request->getVar('stonkid');
+    }
 }

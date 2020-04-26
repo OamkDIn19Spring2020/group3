@@ -13,7 +13,8 @@ class Users extends Database
                 'username' => $username,
                 'password' => $password,
                 'avatar' => 'img/default.jpg',
-                'disabled' => false
+                'disabled' => false,
+                'vip' => false
             ]
         );
     }
@@ -158,9 +159,53 @@ class Users extends Database
             $query = $this->db->table('users')->select('user_id')->where('username', $username)->get();
             $id = $query->getRow()->user_id;
             $query = $this->db->table('users')->set('disabled', true)->where('user_id', $id)->update();
+            $query = $this->db->table('users')->set('disabled_reason', "Disabled by user")->where('user_id', $id)->update();
+            
         } catch (\Throwable $th) {
             return false;
         }
         return true;
+    }
+    //SET ACCOUNT VIP
+    function setvip($username)
+    {
+        try {
+            $query = $this->db->table('users')->select('user_id')->where('username', $username)->get();
+            $id = $query->getRow()->user_id;
+            $query = $this->db->table('users')->set('vip', true)->where('user_id', $id)->update();
+        } catch (\Throwable $th) {
+            return false;
+        }
+        return true;
+    }
+    function getDisabled($username)
+    {
+        try {
+            $query = $this->db->table('users')->select('disabled')->where('username', $username)->get();
+            $disabled = $query->getRow()->disabled;
+        } catch (\Throwable $th) {
+            return 0;
+        }
+        return $disabled;
+    }
+    function getDisabledReason($username)
+    {
+        try {
+            $query = $this->db->table('users')->select('disabled_reason')->where('username', $username)->get();
+            $disabled_reason = $query->getRow()->disabled_reason;
+        } catch (\Throwable $th) {
+            return 0;
+        }
+        return $disabled_reason;
+    }
+    function getVIPStatus($username)
+    {
+        try {
+            $query = $this->db->table('users')->select('vip')->where('username', $username)->get();
+            $vipstatus = $query->getRow()->vip;
+        } catch (\Throwable $th) {
+            return 0;
+        }
+        return $vipstatus;
     }
 }

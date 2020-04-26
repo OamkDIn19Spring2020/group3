@@ -18,6 +18,7 @@ class Tables extends Database
                 `disabled` BOOLEAN NOT NULL,
                 `disabled_reason` varchar(255),
                 `create_date` TIMESTAMP NOT NULL,
+                `vip` BOOLEAN NOT NULL,
                 PRIMARY KEY (`user_id`)
             )'
             );

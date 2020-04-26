@@ -112,6 +112,8 @@ class Pages extends BaseController
             $data['pricenow'] = $pricenow;
             $avatar = $users->getavatar($username);
             $data['avatar'] = $avatar;
+            $vip = $users->getVIPStatus($username);
+            $data['vip'] = $vip;
             if ($page == 'exchange') {
                 $hourlydata = $prices->generatePriceData('lasthour');
                 $dailydata = $prices->generatePriceData('lastday');
