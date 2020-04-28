@@ -21,6 +21,12 @@
     foreach ($files as $file) {
         echo '<img class="d-block avatar" src="'.$file.'" onclick=selectAvatar("'.$file.'")>';
     }
+    if ($vip == true) {
+        $files = glob('img/vip/*.{jpg,png,gif}', GLOB_BRACE);
+        foreach ($files as $file) {
+            echo '<img class="d-block avatar" src="'.$file.'" onclick=selectAvatar("'.$file.'")>';
+        }
+    }
 ?>
 <div class="clearboth"></div>
 
