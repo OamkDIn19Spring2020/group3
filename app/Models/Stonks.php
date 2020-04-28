@@ -18,7 +18,7 @@ class Stonks extends Database
         $query = $this->db->query(
             'INSERT INTO stonks 
             (stonk_name, issuer_id, stonk_desc, stonk_tradable, base, volatility) VALUES
-            ("'.$this->randomize_stonk_name().'", '.rand(2,4).', "'.$default_stonk_desc[rand(0,4)].'", true, '.rand(1, 10).','.rand(1, 100).')'
+            ("'.$this->randomize_stonk_name().'", '.rand(2,4).', "'.$default_stonk_desc[rand(0,4)].'", true, '.rand(10, 100).','.rand(1, 10).')'
         );
     }
     //FETCH ALL STONK PROPERTIES

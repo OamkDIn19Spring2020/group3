@@ -55,7 +55,7 @@ echo '<div class="tab-pane fade show active" id="v-pills-'.$stonkproperties[0]->
 <a href="'.base_url('/quicktrade//'.$stonkproperties[0]->stonk_id.'').'"><button class="btn btn-success">Buy/Sell</button></a>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
-    <a class="nav-link disabled" href="#">Price graph</a>
+    <a class="nav-link disabled" href="#">Average Price graph</a>
     </li>
     <li class="nav-item">
     <a class="nav-link active" id="hourly-tab" data-toggle="tab" href="#hourly" role="tab" aria-controls="hourly" aria-selected="true">1h</a>
@@ -131,7 +131,7 @@ for ($i = 1; $i < count($stonkproperties); $i++) {
     <a href="'.base_url('/quicktrade//'.$stonkproperties[$i]->stonk_id.'').'"><button class="btn btn-success">Buy/Sell</button></a>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
-    <a class="nav-link disabled" href="#">Price graph</a>
+    <a class="nav-link disabled" href="#">Average Price graph</a>
     </li>
     <li class="nav-item">
     <a class="nav-link active" id="hourly'.$i.'-tab" data-toggle="tab" href="#hourly'.$i.'" role="tab" aria-controls="hourly'.$i.'" aria-selected="true">1h</a>

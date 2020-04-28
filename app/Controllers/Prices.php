@@ -21,6 +21,7 @@ class Prices extends BaseController
             $hourarr = [];
             for ($i = 0; $i < count($stonks->get_stonk_properties()); $i++) {
                 $date = new DateTime();
+                $date->sub(new DateInterval('P15'.$i.'D'));
                 $pricearr = [];
                 for ($a = 0; $a < 60; $a++) {
                     mt_srand($date->format("dHi") * 3.14);
@@ -42,6 +43,7 @@ class Prices extends BaseController
             $dayarr = [];
             for ($i = 0; $i < count($stonks->get_stonk_properties()); $i++) {
                 $date = new DateTime();
+                $date->sub(new DateInterval('P15'.$i.'D'));
                 $pricearr = [];
                 for ($a = 0; $a < 24; $a++) {
                     mt_srand($date->format("dHi") * 3.14);
@@ -63,6 +65,7 @@ class Prices extends BaseController
             $weekarr = [];
             for ($i = 0; $i < count($stonks->get_stonk_properties()); $i++) {
                 $date = new DateTime();
+                $date->sub(new DateInterval('P15'.$i.'D'));
                 $pricearr = [];
                 for ($a = 0; $a < 7; $a++) {
                     mt_srand($date->format("dHi") * 3.14);
@@ -81,10 +84,11 @@ class Prices extends BaseController
             }
             return $weekarr;
         } else {
-            $date = new DateTime();
-            $date_now = $date->format("dHi");
             $pricearr = [];
             for ($i = 0; $i < count($stonks->get_stonk_properties()); $i++) {
+                $date = new DateTime();
+                $date->sub(new DateInterval('P15'.$i.'D'));
+                $date_now = $date->format("dHi");
                 mt_srand($date_now * 3.14);
                 $gen = mt_rand(0, 10);
                 $vol = $stonks->get_stonk_properties()[$i]->volatility;
