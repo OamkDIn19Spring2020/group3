@@ -127,8 +127,8 @@ class TX extends BaseController
             if (!is_null($stonkid) && !is_null($amount) && !is_null($value)) {
                 $pricenow = $pages->getData()['pricenow'][$stonkid];
                 if ($value != $amount * $pricenow) {
-                    $error->setErrorState('danger', 'Stonk Price Mismatch, Please Try Again');
-                    $pages->get('home');
+                    $error->setErrorState('danger', 'Transaction cancelled: Stonk price updated');
+                    $pages->get('dashboard');
                     return;
                 }
             }
@@ -137,15 +137,15 @@ class TX extends BaseController
                 $current_funds = $users->check_balance($username);
                 if ($current_funds < $value) {
                     $error->setErrorState('danger', 'Insufficient funds');
-                    $pages->get('home');
+                    $pages->get('dashboard');
                 } else {
                     $success = $transactions->stonk_transaction($username, -$value, $stonkid, $amount, "Stonk Purchase");
                     if ($success) {
                         $error->setErrorState('success', 'Stonks Purchased');
-                        $pages->get('home');
+                        $pages->get('dashboard');
                     } else {
                         $error->setErrorState('danger', 'Unable to Purchase Stonks');
-                        $pages->get('home');
+                        $pages->get('dashboard');
                     }
                 }
             } else if ($this->request->getVar('operation') == "sell") {
@@ -160,18 +160,18 @@ class TX extends BaseController
                     $success = $transactions->stonk_transaction($username, $value, $stonkid, -$amount, "Stonk Sold");
                     if ($success) {
                         $error->setErrorState('success', 'Stonks Sold');
-                        $pages->get('home');
+                        $pages->get('dashboard');
                     } else {
                         $error->setErrorState('danger', 'Unable to Sell Stonks');
-                        $pages->get('home');
+                        $pages->get('dashboard');
                     }
                 } else {
                     $error->setErrorState('danger', 'Insufficient Stonks');
-                    $pages->get('home');
+                    $pages->get('dashboard');
                 }
             } else {
                 $error->setErrorState('danger', 'Unable to process transaction');
-                $pages->get('home');
+                $pages->get('dashboard');
             }
         } else {
             $error->setErrorState('danger', 'Not signed in');
